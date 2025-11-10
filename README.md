@@ -40,9 +40,11 @@ cd ..
 
 ### 3. 配置后端连接
 
+API Server 和 Agent 两个组件代码访问进行部署 ：https://github.com/yingfu9218/monitor-system
+
 在应用启动后，点击右上角设置按钮（⚙️），配置：
 
-- **API 地址**: `http://localhost` 或您的服务器 IP
+- **API 地址**: `http://localhost` 或您的服务器 IP （必须使用https协议，app不允许http请求）
 - **API 端口**: `8080`
 - **API 密钥**: 与后端 `server-config.yaml` 中的 `api_key` 一致
 
