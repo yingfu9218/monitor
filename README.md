@@ -1,97 +1,304 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 服务器监控 - React Native 前端
 
-# Getting Started
+这是服务器监控系统的 React Native 移动端应用。
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 功能特性
 
-## Step 1: Start Metro
+- ✅ 服务器列表展示
+- ✅ 实时监控数据显示（CPU、内存、网络）
+- ✅ 服务器状态指示（在线/警告/离线）
+- ✅ API 服务集成
+- 🚧 服务器详情页面（待完善）
+- 🚧 历史数据图表（待完善）
+- 🚧 设置页面（待完善）
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 技术栈
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- React Native 0.82.1
+- TypeScript
+- React Navigation（已安装）
+- React Native Chart Kit（已安装）
+- React Native Vector Icons（已安装）
+- Axios（HTTP 客户端）
 
-```sh
-# Using npm
-npm start
+## 快速开始
 
-# OR using Yarn
-yarn start
+### 1. 安装依赖
+
+```bash
+npm install
 ```
 
-## Step 2: Build and run your app
+### 2. iOS 依赖（仅 macOS）
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
+```bash
+cd ios
 bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
 bundle exec pod install
+cd ..
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### 3. 配置后端连接
 
-```sh
-# Using npm
+在应用启动后，点击右上角设置按钮（⚙️），配置：
+
+- **API 地址**: `http://localhost` 或您的服务器 IP
+- **API 端口**: `8080`
+- **API 密钥**: 与后端 `server-config.yaml` 中的 `api_key` 一致
+
+> 注意：如果在模拟器中访问本地服务器：
+> - iOS 模拟器: 使用 `http://localhost:8080`
+> - Android 模拟器: 使用 `http://10.0.2.2:8080`
+
+### 4. 启动开发服务器
+
+```bash
+npm start
+```
+
+### 5. 运行应用
+
+**iOS**:
+```bash
 npm run ios
-
-# OR using Yarn
-yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+**Android**:
+```bash
+npm run android
+```
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## 项目结构
 
-## Step 3: Modify your app
+```
+src/
+├── components/        # UI 组件
+│   ├── ui/           # 基础组件（Button, Card, Badge）
+│   └── ServerCard.tsx
+├── screens/          # 页面
+│   └── ServerListScreen.tsx
+├── services/         # API 服务
+│   └── api.ts
+├── types/            # TypeScript 类型
+│   └── index.ts
+└── utils/            # 工具函数
+    └── theme.ts      # 主题配置
+```
 
-Now that you have successfully run the app, let's make changes!
+## 组件说明
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### 基础 UI 组件
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+#### Button
+```typescript
+<Button
+  onPress={() => {}}
+  variant="default" // default | ghost | outline | destructive
+  size="default"    // default | sm | lg | icon
+>
+  按钮文字
+</Button>
+```
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+#### Card
+```typescript
+<Card onPress={() => {}}>
+  <Text>卡片内容</Text>
+</Card>
+```
 
-## Congratulations! :tada:
+#### Badge
+```typescript
+<Badge variant="success"> // default | secondary | destructive | success
+  正常
+</Badge>
+```
 
-You've successfully run and modified your React Native App. :partying_face:
+### 业务组件
 
-### Now what?
+#### ServerCard
+显示单个服务器的卡片，包含：
+- 服务器名称和 IP
+- 状态徽章
+- 实时监控指标（CPU、内存、网络）
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+#### ServerListScreen
+服务器列表页面，显示所有服务器
 
-# Troubleshooting
+## API 服务
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+API 服务位于 `src/services/api.ts`，提供以下方法：
 
-# Learn More
+```typescript
+// 配置 API
+apiService.configure(apiUrl, apiPort, apiKey);
 
-To learn more about React Native, take a look at the following resources:
+// 验证认证
+await apiService.verifyAuth();
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+// 获取服务器列表
+const servers = await apiService.getServers();
+
+// 获取服务器详情
+const server = await apiService.getServerDetail(serverId);
+
+// 获取历史数据
+const history = await apiService.getServerHistory(serverId, '20m');
+
+// 获取磁盘信息
+const disks = await apiService.getDisks(serverId);
+
+// 获取进程列表
+const processes = await apiService.getProcesses(serverId);
+
+// 获取网络信息
+const network = await apiService.getNetwork(serverId);
+```
+
+## 主题系统
+
+主题配置位于 `src/utils/theme.ts`：
+
+```typescript
+import { colors, spacing, fontSize, borderRadius } from '../utils/theme';
+
+// 颜色
+colors.primary      // 主色
+colors.success      // 成功色
+colors.warning      // 警告色
+colors.error        // 错误色
+colors.textPrimary  // 主文字色
+
+// 间距
+spacing.xs    // 4px
+spacing.sm    // 8px
+spacing.md    // 12px
+spacing.lg    // 16px
+
+// 字体大小
+fontSize.xs   // 12px
+fontSize.sm   // 14px
+fontSize.md   // 16px
+
+// 圆角
+borderRadius.sm   // 4px
+borderRadius.md   // 8px
+borderRadius.lg   // 12px
+```
+
+## 开发说明
+
+### 待完成功能
+
+1. **服务器详情页面**
+   - 详细监控数据
+   - 历史数据图表
+   - 磁盘、进程、网络详情入口
+
+2. **设置对话框**
+   - API 配置界面
+   - 保存和验证功能
+
+3. **导航系统**
+   - 使用 React Navigation
+   - 页面间跳转
+
+4. **图表组件**
+   - 使用 React Native Chart Kit
+   - 显示 CPU、内存、网络历史数据
+
+5. **数据刷新**
+   - 下拉刷新
+   - 自动轮询更新
+
+### 添加新页面
+
+1. 在 `src/screens/` 创建新页面
+2. 在 `App.tsx` 中集成
+3. 配置导航（如果使用 React Navigation）
+
+### 调用 API
+
+```typescript
+import { apiService } from './src/services/api';
+
+// 在组件中
+const [servers, setServers] = useState([]);
+
+useEffect(() => {
+  const fetchServers = async () => {
+    try {
+      const data = await apiService.getServers();
+      setServers(data);
+    } catch (error) {
+      console.error('获取服务器列表失败:', error);
+    }
+  };
+
+  fetchServers();
+}, []);
+```
+
+## 故障排查
+
+### 常见问题
+
+1. **npm install 失败**
+   - 确保 Node.js 20+ 已安装
+   - 删除 `node_modules` 和 `package-lock.json`，重新安装
+
+2. **iOS 编译失败**
+   - 运行 `cd ios && pod install`
+   - 清理缓存: `cd ios && pod deintegrate && pod install`
+
+3. **Android 编译失败**
+   - 清理缓存: `cd android && ./gradlew clean`
+   - 确保 JDK 17 已安装
+
+4. **无法连接后端**
+   - 检查后端是否运行
+   - 检查 API 配置是否正确
+   - iOS 模拟器使用 `localhost`，Android 模拟器使用 `10.0.2.2`
+
+### 调试
+
+```bash
+# 查看日志
+npx react-native log-ios
+npx react-native log-android
+
+# 重置缓存
+npm start -- --reset-cache
+```
+
+## 相关文档
+
+- [React Native 官方文档](https://reactnative.dev/)
+- [React Navigation 文档](https://reactnavigation.org/)
+- [后端 API 文档](../monitor-system/README.md)
+- [项目总结](../PROJECT_SUMMARY.md)
+
+## 后续计划
+
+### 第一阶段
+- [ ] 实现服务器详情页面
+- [ ] 实现设置对话框
+- [ ] 集成 React Navigation
+
+### 第二阶段
+- [ ] 实现历史数据图表
+- [ ] 添加下拉刷新
+- [ ] 实现自动数据更新
+
+### 第三阶段
+- [ ] 优化 UI 和动画
+- [ ] 添加错误处理
+- [ ] 添加离线缓存
+
+## 许可证
+
+MIT License
+
+---
+
+**注意**: 这是一个基于 Figma Make 生成的 UI 转换而来的 React Native 项目。原 Figma 设计是 Web 版本，已转换为 React Native 移动端适配。
