@@ -29,16 +29,7 @@ interface Process {
 }
 
 export function ProcessListScreen({ serverName, serverId, onBack }: ProcessListScreenProps) {
-  const [processes, setProcesses] = useState<Process[]>([
-    { pid: 1234, name: 'nginx', cpu: 45.2, memory: 12.5, user: 'root', status: 'running' },
-    { pid: 5678, name: 'mysql', cpu: 32.8, memory: 35.6, user: 'mysql', status: 'running' },
-    { pid: 9012, name: 'node', cpu: 28.5, memory: 18.3, user: 'www', status: 'running' },
-    { pid: 3456, name: 'redis-server', cpu: 15.7, memory: 8.2, user: 'redis', status: 'running' },
-    { pid: 7890, name: 'php-fpm', cpu: 12.3, memory: 22.1, user: 'www', status: 'running' },
-    { pid: 2345, name: 'python', cpu: 10.5, memory: 15.8, user: 'root', status: 'running' },
-    { pid: 6789, name: 'apache2', cpu: 8.9, memory: 9.5, user: 'www', status: 'running' },
-    { pid: 1357, name: 'mongod', cpu: 7.2, memory: 28.4, user: 'mongodb', status: 'running' },
-  ]);
+  const [processes, setProcesses] = useState<Process[]>([]);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -52,7 +43,7 @@ export function ProcessListScreen({ serverName, serverId, onBack }: ProcessListS
       }
     } catch (error) {
       console.error('Failed to fetch process data:', error);
-      // Keep current static data if fetch fails
+      setProcesses([]);
     }
   };
 

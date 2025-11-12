@@ -32,38 +32,7 @@ interface NetworkInterface {
 }
 
 export function NetworkDetailScreen({ serverName, serverId, onBack }: NetworkDetailScreenProps) {
-  const [interfaces, setInterfaces] = useState<NetworkInterface[]>([
-    {
-      id: '1',
-      name: 'eth0',
-      type: '以太网',
-      uploadSpeed: 5.5,    // MB/s - 后端返回的单位已经是 MB/s
-      downloadSpeed: 8.3,  // MB/s
-      totalUpload: 1250,   // MB - 后端返回的单位是 MB
-      totalDownload: 3480, // MB
-      status: 'active',
-    },
-    {
-      id: '2',
-      name: 'eth1',
-      type: '以太网',
-      uploadSpeed: 2.2,    // MB/s
-      downloadSpeed: 4.6,  // MB/s
-      totalUpload: 680,    // MB
-      totalDownload: 1920, // MB
-      status: 'active',
-    },
-    {
-      id: '3',
-      name: 'lo',
-      type: '本地回环',
-      uploadSpeed: 0.1,    // MB/s
-      downloadSpeed: 0.1,  // MB/s
-      totalUpload: 15,     // MB
-      totalDownload: 15,   // MB
-      status: 'active',
-    },
-  ]);
+  const [interfaces, setInterfaces] = useState<NetworkInterface[]>([]);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -88,7 +57,7 @@ export function NetworkDetailScreen({ serverName, serverId, onBack }: NetworkDet
       }
     } catch (error) {
       console.error('Failed to fetch network data:', error);
-      // Keep current static data if fetch fails
+      setInterfaces([]);
     }
   };
 

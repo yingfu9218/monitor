@@ -32,38 +32,7 @@ interface Disk {
 }
 
 export function DiskDetailScreen({ serverName, serverId, onBack }: DiskDetailScreenProps) {
-  const [disks, setDisks] = useState<Disk[]>([
-    {
-      id: '1',
-      name: '/dev/sda1',
-      mountPoint: '/',
-      fsType: 'ext4',
-      totalSize: 500,
-      usedSize: 290,
-      availableSize: 210,
-      usagePercent: 58,
-    },
-    {
-      id: '2',
-      name: '/dev/sda2',
-      mountPoint: '/home',
-      fsType: 'ext4',
-      totalSize: 1000,
-      usedSize: 450,
-      availableSize: 550,
-      usagePercent: 45,
-    },
-    {
-      id: '3',
-      name: '/dev/sdb1',
-      mountPoint: '/data',
-      fsType: 'xfs',
-      totalSize: 2000,
-      usedSize: 1200,
-      availableSize: 800,
-      usagePercent: 60,
-    },
-  ]);
+  const [disks, setDisks] = useState<Disk[]>([]);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -82,7 +51,7 @@ export function DiskDetailScreen({ serverName, serverId, onBack }: DiskDetailScr
       }
     } catch (error) {
       console.error('Failed to fetch disk data:', error);
-      // Keep current static data if fetch fails
+      setDisks([]);
     }
   };
 

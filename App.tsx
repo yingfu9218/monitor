@@ -74,17 +74,7 @@ function App() {
     } catch (err) {
       console.error('Failed to fetch servers:', err);
       setError('无法连接到服务器，请检查API设置');
-      // 如果获取失败，使用静态数据作为后备
-      setServers([
-        {
-          id: 'demo-1',
-          name: '演示服务器 01',
-          ip: '192.168.1.100',
-          status: 'online',
-          os: 'Ubuntu 22.04',
-          location: '北京',
-        },
-      ]);
+      setServers([]);
     } finally {
       setIsLoading(false);
     }

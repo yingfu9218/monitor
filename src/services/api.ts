@@ -104,6 +104,16 @@ class ApiService {
       throw error;
     }
   }
+
+  async deleteServer(serverId: string): Promise<void> {
+    this.ensureConfigured();
+    try {
+      await this.client!.delete(`/servers/${serverId}`);
+    } catch (error) {
+      console.error('Failed to delete server:', error);
+      throw error;
+    }
+  }
 }
 
 export const apiService = new ApiService();

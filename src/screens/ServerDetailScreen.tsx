@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -17,6 +18,7 @@ import {
   HardDriveIcon,
   ChevronRightIcon,
   ListOrderedIcon,
+  TrashIcon,
 } from '../components/icons';
 import { Card } from '../components/ui/Card';
 import { Progress } from '../components/ui/Progress';
@@ -108,17 +110,7 @@ export function ServerDetailScreen({
       }
     } catch (error) {
       console.error('Failed to fetch server data:', error);
-      // Use fallback static data
-      const initialHistory = Array.from({ length: 20 }, (_, i) => ({
-        time: `${19 - i}m`,
-        cpu: Math.floor(Math.random() * 40) + 20,
-        memory: Math.floor(Math.random() * 40) + 30,
-        diskRead: Math.floor(Math.random() * 50) + 10,
-        diskWrite: Math.floor(Math.random() * 40) + 10,
-        networkIn: Math.floor(Math.random() * 100) + 50,
-        networkOut: Math.floor(Math.random() * 100) + 30,
-      }));
-      setHistory(initialHistory);
+      setHistory([]);
     }
   };
 
@@ -137,6 +129,36 @@ export function ServerDetailScreen({
     setRefreshing(true);
     await fetchServerData();
     setRefreshing(false);
+  };
+
+  const handleDelete = () => {
+    Alert.alert(
+      '删除服务器',
+      `确定要删除服务器 "${server.name}" 吗？此操作无法撤销。`,
+      [
+        {
+          text: '取消',
+          style: 'cancel',
+        },
+        {
+          text: '删除',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await apiService.deleteServer(server.id);
+              Alert.alert('成功', '服务器已删除', [
+                {
+                  text: '确定',
+                  onPress: onBack,
+                },
+              ]);
+            } catch (error) {
+              Alert.alert('错误', '删除服务器失败，请重试');
+            }
+          },
+        },
+      ]
+    );
   };
 
   const tabs = [
@@ -225,6 +247,13 @@ export function ServerDetailScreen({
             activeOpacity={0.7}
           >
             <RefreshIcon size={20} color={colors.textPrimary} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={handleDelete}
+            activeOpacity={0.7}
+          >
+            <TrashIcon size={20} color={colors.error} />
           </TouchableOpacity>
         </View>
       </View>
@@ -425,6 +454,14 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   refreshButton: {
+    width: 40,
+    height: 40,
+    borderRadius: borderRadius.full,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 4,
+  },
+  deleteButton: {
     width: 40,
     height: 40,
     borderRadius: borderRadius.full,
