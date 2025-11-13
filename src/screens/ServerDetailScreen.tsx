@@ -307,7 +307,7 @@ export function ServerDetailScreen({
               <View style={styles.statCardInfo}>
                 <Text style={styles.statLabel}>网络</Text>
                 <Text style={styles.statValueSmall}>
-                  ↓{formatNetworkSpeed(metrics.networkIn)} ↑{formatNetworkSpeed(metrics.networkOut)}
+                  ↑{formatNetworkSpeed(metrics.networkOut)} ↓{formatNetworkSpeed(metrics.networkIn)}
                 </Text>
               </View>
               <ChevronRightIcon size={20} color={colors.slate400} />
@@ -316,13 +316,13 @@ export function ServerDetailScreen({
               <View
                 style={[
                   styles.networkBar,
-                  { backgroundColor: colors.orange500, width: `${metrics.networkIn / 2}%` },
+                  { backgroundColor: colors.orange500, width: `${metrics.networkOut / 2}%` },
                 ]}
               />
               <View
                 style={[
                   styles.networkBar,
-                  { backgroundColor: '#fdba74', width: `${metrics.networkOut / 2}%` },
+                  { backgroundColor: '#fdba74', width: `${metrics.networkIn / 2}%` },
                 ]}
               />
             </View>
